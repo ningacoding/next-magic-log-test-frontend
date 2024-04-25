@@ -19,7 +19,7 @@ export default function Index() {
   
   const router = useRouter();
   const slideOverRef: any = useRef(null);
-  const {hasLoggedIn, isAdmin} = useContext(AuthContext);
+  const {hasLoggedIn, isAdmin, isSeller} = useContext(AuthContext);
   const {selectedProvidersIds, setSelectedProviders} = useContext(ProvidersContext);
   
   const [search, setSearch] = useState('');
@@ -85,7 +85,7 @@ export default function Index() {
                   </button>
                 </span>}
                 
-                <span className="sm:ml-3">
+                {(isAdmin || isSeller) && <span className="sm:ml-3">
                   <button
                     type="button"
                     className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -95,7 +95,7 @@ export default function Index() {
                               aria-hidden="true"/>
                     Agregar producto
                   </button>
-                </span>
+                </span>}
               </div>
             </Header>
           </div>
