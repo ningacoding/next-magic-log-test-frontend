@@ -1,5 +1,5 @@
 'use client';
-import {createContext, Dispatch, SetStateAction, useEffect, useState} from 'react';
+import {createContext, SetStateAction, useEffect, useState} from 'react';
 import useHttp from '@/utils/http';
 import Loader from '@/components/loader';
 import {RoleEnum} from '@/constants/role.enum';
