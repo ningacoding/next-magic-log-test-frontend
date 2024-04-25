@@ -19,7 +19,7 @@ const fetcher = async (...args: any[]) => {
   }
   try {
     const res = await fetch(url, {
-      // mode: 'no-cors',
+      mode: 'cors',
       method: !!body ? 'POST' : 'GET',
       body: JSON.stringify(body),
       headers,
