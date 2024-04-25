@@ -15,7 +15,7 @@ export default function useHttp(url: string | Function, body?: object) {
     'function': url,
   };
   const urlType = typeof url;
-  const hasBody = !!body;;
+  const hasBody = !!body;
   return useSWR(hasBody ? [endpoint[urlType], body] : endpoint[urlType], fetcher);
 }
 
@@ -38,5 +38,5 @@ export function useHttpMutated(url: string | Function, body?: object): {
   };
   const urlType = typeof url;
   const hasBody = !!body;
-  return useSWRMutation(hasBody ? [endpoint[urlType], body] : endpoint[urlType], fetcher);
+  return useSWRMutation(hasBody ? [endpoint[urlType], body] : endpoint[urlType], fetcher, {throwOnError: false});
 }

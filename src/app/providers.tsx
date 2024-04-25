@@ -1,8 +1,9 @@
 'use client';
 import {createContext, Dispatch, SetStateAction, useEffect, useState} from 'react';
-import useHttp from '@/utils/http';
+import useHttp, {useHttpMutated} from '@/utils/http';
 import Loader from '@/components/loader';
 import {RoleEnum} from '@/constants/role.enum';
+import useSWRMutation from 'swr/mutation';
 
 export const AuthContext = createContext({
   authEmail: null,
@@ -20,12 +21,15 @@ export const ProvidersContext = createContext({
 });
 
 export function Providers({children}: any) {
-  let accessToken;
+  let accessToken: unknown;
+  
+  const {trigger: getMyData, data, isMutating} = useHttpMutated('/users/me');
+  
   if (typeof window !== 'undefined') {
     accessToken = localStorage.getItem('accessToken');
   }
+  
   const [hasLoggedIn, setHasLoggedIn] = useState(!!accessToken);
-  const {data, isLoading} = useHttp('/users/me');
   const [authEmail, setAuthEmail] = useState(data?.email);
   const [isAdmin, setIsAdmin] = useState(data?.roleId === RoleEnum.Admin);
   const [isBuyer, setIsBuyer] = useState(data?.roleId === RoleEnum.Admin);
@@ -39,12 +43,19 @@ export function Providers({children}: any) {
   }, [data?.email]);
   
   useEffect(() => {
+    setHasLoggedIn(!!accessToken);
+    if (!!accessToken) {
+      getMyData();
+    }
+  }, [accessToken]);
+  
+  useEffect(() => {
     setIsAdmin(data?.roleId === RoleEnum.Admin);
     setIsBuyer(data?.roleId === RoleEnum.Buyer);
     setIsSeller(data?.roleId === RoleEnum.Seller);
   }, [data?.roleId]);
   
-  if (isLoading) {
+  if (isMutating) {
     return <Loader size={'large'}
                    containerStyle={'h-full'}/>;
   }
