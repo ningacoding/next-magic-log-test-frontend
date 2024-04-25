@@ -38,5 +38,5 @@ export function useHttpMutated(url: string | Function, body?: object): {
   };
   const urlType = typeof url;
   const hasBody = !!body;
-  return useSWRMutation(hasBody ? [endpoint[urlType], body] : endpoint[urlType], fetcher, {throwOnError: false});
+  return useSWRMutation(hasBody ? [endpoint[urlType], body] : endpoint[urlType], fetcher);
 }
